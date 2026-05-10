@@ -1,0 +1,21 @@
+<svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="backpackGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#C41E3A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B0000;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Corpo da mochila -->
+  <rect x="20" y="25" width="50" height="60" rx="5" fill="url(#backpackGradient)"/>
+  <!-- Alça esquerda -->
+  <path d="M 30 25 Q 25 10 30 5" stroke="#C41E3A" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- Alça direita -->
+  <path d="M 70 25 Q 75 10 70 5" stroke="#C41E3A" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- Bolso frontal -->
+  <rect x="28" y="42" width="34" height="25" rx="3" fill="rgba(255,255,255,0.2)"/>
+  <!-- Detalhes do bolso -->
+  <circle cx="38" cy="48" r="2" fill="white" opacity="0.6"/>
+  <circle cx="45" cy="48" r="2" fill="white" opacity="0.6"/>
+  <circle cx="52" cy="48" r="2" fill="white" opacity="0.6"/>
+  <circle cx="59" cy="48" r="2" fill="white" opacity="0.6"/>
+</svg>

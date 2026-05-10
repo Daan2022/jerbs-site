@@ -1,0 +1,15 @@
+Esta pasta deve conter os ícones 3D em formato PNG com fundo transparente.
+
+Arquivos esperados:
+- 3d-book.png      (Livro escolar 3D)
+- 3d-backpack.png  (Mochila escolar 3D)
+- 3d-star.png      (Estrela 3D)
+- 3d-pencil.png    (Lápis 3D)
+- 3d-ball.png      (Bola colorida 3D)
+
+Onde baixar ícones 3D gratuitos com fundo transparente:
+- https://icons8.com/icons/set/3d (filtrar por "3D")
+- https://www.flaticon.com/search?word=school&type=3d-illustration
+- https://iconscout.com/3d-illustrations (buscar: school, book, backpack)
+
+Dica: Procure por "3D school elements PNG transparent background"

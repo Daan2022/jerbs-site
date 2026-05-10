@@ -1,0 +1,20 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="ballGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#C41E3A;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0096D6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFD60A;stop-opacity:1" />
+    </linearGradient>
+    <radialGradient id="ballShine">
+      <stop offset="0%" style="stop-color:white;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:white;stop-opacity:0" />
+    </radialGradient>
+  </defs>
+  <!-- Esfera principal -->
+  <circle cx="50" cy="50" r="35" fill="url(#ballGradient)"/>
+  <!-- Brilho na esfera -->
+  <circle cx="35" cy="35" r="15" fill="url(#ballShine)"/>
+  <!-- Detalhes/seções da bola -->
+  <path d="M 50 15 Q 70 50 50 85" stroke="rgba(0,0,0,0.1)" stroke-width="2" fill="none"/>
+  <path d="M 15 50 Q 50 70 85 50" stroke="rgba(0,0,0,0.1)" stroke-width="2" fill="none"/>
+</svg>

@@ -1,0 +1,157 @@
+/**
+ * globals.css
+ * Estilos globais, variáveis de design e utilitários customizados.
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Variáveis de Design (Design Tokens) ─────────────────────────────────── */
+:root {
+  /* Paleta de Cores Principal - Tema Azul */
+  --color-cream: #FDFAF6;
+  --color-blue-dark: #19194D;      /* Azul Escuro (Principal) */
+  --color-blue-medium: #1C75BC;    /* Azul Médio */
+  --color-blue-light: #008FC7;     /* Azul Claro (Secundário) */
+  --color-blue-pastel: #E0F4FF;
+  --color-red: #C1272D;             /* Vermelho */
+  --color-yellow: #FBB03B;          /* Amarelo */
+  --color-yellow-pastel: #FFF3CC;
+  --color-green: #95D5B2;
+  --color-green-pastel: #D8F3DC;
+  --color-purple: #C77DFF;
+  --color-purple-pastel: #EDD9FF;
+  --color-text-dark: #2D2D2D;
+  --color-text-medium: #5A5A6A;
+  --color-text-light: #9494A8;
+
+  /* Fontes */
+  --font-display: var(--font-poppins), sans-serif;
+  --font-body: var(--font-quicksand), sans-serif;
+
+  /* Sombras Claymorphism */
+  --shadow-clay-sm: 4px 4px 0px rgba(0,0,0,0.08), 0 2px 12px rgba(0,0,0,0.06);
+  --shadow-clay-md: 6px 6px 0px rgba(0,0,0,0.10), 0 4px 24px rgba(0,0,0,0.08);
+  --shadow-clay-lg: 8px 8px 0px rgba(0,0,0,0.12), 0 8px 40px rgba(0,0,0,0.10);
+
+  /* Border Radius Orgânico */
+  --radius-blob: 60% 40% 30% 70% / 60% 30% 70% 40%;
+}
+
+/* ─── Reset e Base ────────────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text-dark);
+  background-color: var(--color-cream);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+/* ─── Utilitários Customizados ────────────────────────────────────────────── */
+
+/* Efeito Claymorphism para Cards */
+.clay-card {
+  background: white;
+  border-radius: 24px;
+  box-shadow: var(--shadow-clay-md);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.clay-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-clay-lg);
+}
+
+/* Forma Orgânica Blob para fundos decorativos */
+.blob-shape {
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  animation: morphBlob 8s ease-in-out infinite;
+}
+
+.blob-shape-alt {
+  border-radius: 40% 60% 70% 30% / 40% 70% 30% 60%;
+  animation: morphBlob 10s ease-in-out infinite reverse;
+}
+
+@keyframes morphBlob {
+  0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  25%       { border-radius: 30% 70% 60% 40% / 50% 60% 40% 50%; }
+  50%       { border-radius: 50% 50% 40% 60% / 40% 50% 60% 50%; }
+  75%       { border-radius: 70% 30% 50% 50% / 60% 40% 60% 40%; }
+}
+
+/* Gradiente de texto colorido */
+.text-gradient-coral {
+  background: linear-gradient(135deg, #C1272D, #FBB03B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-blue {
+  background: linear-gradient(135deg, #008FC7, #1C75BC);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Scrollbar customizada e suave */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-blue-light);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-blue-medium);
+}
+
+/* ─── Animações de Entrada (usadas com Framer Motion) ─────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-12px) rotate(2deg); }
+  66%       { transform: translateY(-6px) rotate(-1deg); }
+}
+
+/* Classe para ícones 3D flutuantes (fallback CSS puro) */
+.float-icon {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ─── Fallback de Visibilidade ───────────────────────────────────────────── */
+/* Garante que o conteúdo seja visível mesmo se o Framer Motion falhar.
+   O Framer aplica inline styles que sobrescrevem isso quando funciona. */
+section, main {
+  visibility: visible;
+}
+
+/* Desativa animações para dispositivos com preferência por movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

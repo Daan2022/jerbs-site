@@ -12,7 +12,7 @@ import { Users, Image, MessageSquare, ArrowUpRight } from 'lucide-react';
 
 export default function AdminDashboard() {
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <header className="mb-10">
         <h2 className="text-3xl font-bold mb-2">Bem-vindo, Administrador</h2>
         <p className="text-white/50">Gerencie o conteúdo da sua landing page de forma simples e rápida.</p>

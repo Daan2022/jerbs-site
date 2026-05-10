@@ -68,7 +68,7 @@ export default function HeroAdmin() {
   };
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       <div className="flex justify-between items-center mb-10">
         <div>
           <h2 className="text-3xl font-bold">Banner Principal (Hero)</h2>

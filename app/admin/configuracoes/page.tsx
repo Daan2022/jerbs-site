@@ -58,7 +58,7 @@ export default function ConfiguracoesAdmin() {
   }
 
   return (
-    <div className="p-8 max-w-4xl">
+    <div className="p-4 sm:p-8 max-w-4xl">
       <header className="mb-10">
         <h2 className="text-3xl font-bold mb-2">Configurações Gerais</h2>
         <p className="text-white/50">Atualize as informações de contato e localização da escola.</p>

@@ -13,6 +13,10 @@ export interface ConfiguracoesEscola {
   horario_funcionamento: string;
   instagram_url: string;
   facebook_url: string;
+  // Campos dinâmicos para o formulário
+  faixas_etarias: string[];
+  turnos: string[];
+  objetivos: string[];
 }
 
 // Dados iniciais (mock)
@@ -24,6 +28,20 @@ let configuracoesAtuais: ConfiguracoesEscola = {
   horario_funcionamento: 'Seg–Sex: 7h às 18h',
   instagram_url: 'https://instagram.com/escolajerbs',
   facebook_url: 'https://facebook.com/escolajerbs',
+  faixas_etarias: [
+    'Berçário (4 meses – 1 ano)',
+    'Mini Maternal (1 – 2 anos)',
+    'Maternal (2 – 3 anos)',
+    'Fase I (3 – 4 anos)',
+    'Fase II (4 – 5 anos)'
+  ],
+  turnos: ['Manhã', 'Tarde', 'Integral'],
+  objetivos: [
+    'Informações de matrícula',
+    'Agendar uma visita',
+    'Dúvidas pedagógicas',
+    'Outros assuntos'
+  ],
 };
 
 /**

@@ -73,8 +73,8 @@ export default function Navbar() {
               className="text-xl font-black tracking-tight"
               style={{ fontFamily: 'var(--font-poppins)' }}
             >
+              <span className="text-[#2D2D2D] text-sm font-semibold mr-1">Escola</span>
               <span className="text-[#1C75BC]">JERBS</span>
-              <span className="text-[#2D2D2D] text-sm font-semibold ml-1">Escola</span>
             </span>
           </a>
 

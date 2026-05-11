@@ -55,7 +55,10 @@ function GaleriaCard({
   onClick: () => void;
 }) {
   const IconComponent = ICON_MAP[item.icone_slug] || Camera;
-  const isLarge = layoutClass.includes('col-span-2') && layoutClass.includes('row-span-2');
+  
+  // Verifica se o card é grande APENAS no desktop (md: para cima)
+  // Isso evita que o minHeight force um tamanho errado no mobile
+  const isLarge = layoutClass.includes('md:col-span-2') && layoutClass.includes('md:row-span-2');
 
   return (
     <motion.div
@@ -63,8 +66,12 @@ function GaleriaCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.1 }}
       transition={{ duration: 0.6, delay: index * 0.08, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className={`relative overflow-hidden rounded-[1.75rem] cursor-pointer group ${layoutClass}`}
-      style={{ minHeight: isLarge ? '380px' : '220px' }}
+      className={`relative overflow-hidden rounded-[2rem] cursor-pointer group ${layoutClass}`}
+      style={{ 
+        // No mobile (menor que 768px) usamos uma altura padrão de 280px para todos
+        // No desktop respeitamos a lógica do Bento Grid
+        minHeight: '280px' 
+      }}
       onClick={onClick}
     >
       {/* ── Imagem de fundo com efeito parallax no hover ── */}
@@ -83,7 +90,7 @@ function GaleriaCard({
           background: `linear-gradient(160deg, ${item.cor_inicio}44 0%, transparent 40%, ${item.cor_fim}BB 100%)`,
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10 group-hover:from-black/40 transition-all duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10 group-hover:from-black/50 transition-all duration-500" />
 
       {/* ── Badge superior esquerdo com glassmorphism ── */}
       <div className="absolute top-4 left-4 z-20">
@@ -112,13 +119,13 @@ function GaleriaCard({
       <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6 z-20">
         <div className="translate-y-1 group-hover:translate-y-0 transition-transform duration-500">
           <h4
-            className={`font-black text-white leading-tight mb-1 ${isLarge ? 'text-xl sm:text-2xl' : 'text-base sm:text-lg'}`}
+            className={`font-black text-white leading-tight mb-1 text-xl sm:text-2xl`}
             style={{ fontFamily: 'var(--font-poppins)' }}
           >
             {item.titulo}
           </h4>
           <p
-            className={`text-white/80 font-medium line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 ${isLarge ? 'text-sm' : 'text-xs'}`}
+            className={`text-white/80 font-medium line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 text-sm`}
             style={{ fontFamily: 'var(--font-quicksand)' }}
           >
             {item.descricao}
@@ -138,7 +145,7 @@ function GaleriaCard({
       </div>
 
       {/* ── Borda interna brilhante no hover ── */}
-      <div className="absolute inset-0 rounded-[1.75rem] border-2 border-white/0 group-hover:border-white/20 transition-all duration-500 pointer-events-none" />
+      <div className="absolute inset-0 rounded-[2rem] border-2 border-white/0 group-hover:border-white/20 transition-all duration-500 pointer-events-none" />
     </motion.div>
   );
 }
@@ -229,7 +236,6 @@ export default function GaleriaSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         {/* ── Cabeçalho ── */}
         <div className="text-center mb-14">
-          {/* Pílula superior */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -281,16 +287,16 @@ export default function GaleriaSection() {
 
         {/* ── Bento Grid Principal ── */}
         {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 auto-rows-[220px] gap-4 animate-pulse">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 auto-rows-[280px] gap-6 animate-pulse">
             {[1, 2, 3, 4, 5, 6].map((i) => (
               <div
                 key={i}
-                className={`bg-gray-100 rounded-[1.75rem] ${i === 1 ? 'md:col-span-2 md:row-span-2' : ''} ${i === 5 ? 'md:col-span-2' : ''}`}
+                className={`bg-gray-100 rounded-[2rem] ${i === 1 ? 'md:col-span-2 md:row-span-2' : ''}`}
               />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 auto-rows-[220px] gap-4 mb-14">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 auto-rows-[280px] gap-6 mb-14">
             {items.map((item, index) => (
               <GaleriaCard
                 key={item.id}
@@ -321,11 +327,10 @@ export default function GaleriaSection() {
               background: 'linear-gradient(135deg, #2D6A4F, #52B788)',
             }}
           >
-            {/* Brilho animado no botão */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
             <Images className="w-6 h-6 relative z-10" />
             <span className="relative z-10">Ver Galeria Completa</span>
-            <span className="relative z-10 flex items-center justify-center w-7 h-7 rounded-full bg-white/20 text-xs font-black">
+            <span className="relative z-10 flex items-center justify-center min-w-[1.75rem] h-7 px-1.5 rounded-full bg-white/20 text-xs font-black">
               {itemsCompletos.length}
             </span>
           </motion.button>
@@ -340,110 +345,148 @@ export default function GaleriaSection() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/95 backdrop-blur-sm"
+            className="fixed inset-0 z-[200] flex flex-col bg-[#0a0a0a]/98 backdrop-blur-xl"
             onClick={fecharLightbox}
           >
-            {/* Container principal */}
-            <motion.div
-              initial={{ scale: 0.92, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.92, opacity: 0 }}
-              transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="relative w-full max-w-5xl mx-4 aspect-[4/3] sm:aspect-video"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Imagem principal */}
-              <Image
-                src={itensLightbox[lightboxIndex].imagem_url}
-                alt={itensLightbox[lightboxIndex].titulo}
-                fill
-                className="object-contain rounded-2xl"
-                priority
-                sizes="(max-width: 768px) 100vw, 80vw"
-              />
+            {/* Overlay sutil de ruído */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
 
-              {/* Info flutuante inferior com glassmorphism */}
-              <motion.div
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.2 }}
-                className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 text-white bg-black/30 backdrop-blur-2xl p-4 sm:p-6 rounded-2xl border border-white/10"
-              >
-                <div className="flex items-center gap-3 mb-1">
-                  {(() => {
-                    const Ico = ICON_MAP[itensLightbox[lightboxIndex].icone_slug] || Camera;
-                    return (
-                      <div
-                        className="w-8 h-8 rounded-xl flex items-center justify-center"
-                        style={{ backgroundColor: `${itensLightbox[lightboxIndex].cor_inicio}44` }}
-                      >
-                        <Ico className="w-4 h-4" style={{ color: itensLightbox[lightboxIndex].cor_inicio }} />
-                      </div>
-                    );
-                  })()}
-                  <h3 className="text-lg sm:text-2xl font-black" style={{ fontFamily: 'var(--font-poppins)' }}>
-                    {itensLightbox[lightboxIndex].titulo}
-                  </h3>
-                </div>
-                <p className="text-sm sm:text-base opacity-70 ml-11" style={{ fontFamily: 'var(--font-quicksand)' }}>
-                  {itensLightbox[lightboxIndex].descricao}
-                </p>
-              </motion.div>
-
-              {/* Contador */}
-              <div className="absolute top-4 left-4 sm:top-6 sm:left-6 px-4 py-2 rounded-full bg-black/30 backdrop-blur-xl border border-white/10 text-white text-xs font-bold">
-                {lightboxIndex + 1} / {itensLightbox.length}
+            {/* 1. CABEÇALHO (Fixo no topo) */}
+            <div className="relative flex items-center justify-between px-6 py-4 z-50">
+              <div className="px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl text-white/90 text-xs font-bold tracking-widest">
+                {lightboxIndex + 1} <span className="opacity-40 mx-1">/</span> {itensLightbox.length}
               </div>
-            </motion.div>
+              
+              <button
+                onClick={fecharLightbox}
+                className="w-11 h-11 flex items-center justify-center rounded-full bg-white/5 hover:bg-red-500/20 border border-white/10 hover:border-red-500/50 text-white transition-all duration-300 group"
+              >
+                <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
+              </button>
+            </div>
 
-            {/* ── Botão Fechar ── */}
-            <button
-              onClick={fecharLightbox}
-              className="absolute top-4 right-4 sm:top-8 sm:right-8 w-12 h-12 bg-white/10 hover:bg-white/20 backdrop-blur-xl rounded-full flex items-center justify-center text-white transition-all duration-200 border border-white/10 hover:border-white/20"
-              aria-label="Fechar lightbox"
-            >
-              <X className="w-6 h-6" />
-            </button>
+            {/* 2. ÁREA DA IMAGEM (Flexível) */}
+            <div className="relative flex-1 flex items-center justify-center px-4 sm:px-12 group/main overflow-hidden">
+              <motion.div
+                key={lightboxIndex}
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                className="relative w-full h-full max-h-[50vh] sm:max-h-[70vh]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Image
+                  src={itensLightbox[lightboxIndex].imagem_url}
+                  alt={itensLightbox[lightboxIndex].titulo}
+                  fill
+                  className="object-contain drop-shadow-2xl"
+                  priority
+                  sizes="(max-width: 1280px) 100vw, 1200px"
+                />
 
-            {/* ── Navegação Anterior ── */}
-            <button
-              onClick={(e) => { e.stopPropagation(); irAnterior(); }}
-              className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 bg-white/10 hover:bg-white/20 backdrop-blur-xl rounded-full flex items-center justify-center text-white transition-all duration-200 border border-white/10 hover:border-white/20 hover:scale-110"
-              aria-label="Foto anterior"
-            >
-              <ChevronLeft className="w-7 h-7" />
-            </button>
+                {/* Navegação Desktop (Laterais) */}
+                <div className="hidden lg:block absolute inset-y-0 -inset-x-24 z-10 pointer-events-none">
+                   <div className="h-full flex items-center justify-between">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); irAnterior(); }}
+                        className="pointer-events-auto w-16 h-16 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white transition-all duration-300 hover:scale-110 active:scale-95 group"
+                      >
+                        <ChevronLeft className="w-8 h-8 group-hover:-translate-x-1 transition-transform" />
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); irProximo(); }}
+                        className="pointer-events-auto w-16 h-16 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white transition-all duration-300 hover:scale-110 active:scale-95 group"
+                      >
+                        <ChevronRight className="w-8 h-8 group-hover:translate-x-1 transition-transform" />
+                      </button>
+                   </div>
+                </div>
+              </motion.div>
+            </div>
 
-            {/* ── Navegação Próximo ── */}
-            <button
-              onClick={(e) => { e.stopPropagation(); irProximo(); }}
-              className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 bg-white/10 hover:bg-white/20 backdrop-blur-xl rounded-full flex items-center justify-center text-white transition-all duration-200 border border-white/10 hover:border-white/20 hover:scale-110"
-              aria-label="Próxima foto"
-            >
-              <ChevronRight className="w-7 h-7" />
-            </button>
-
-            {/* ── Thumbnails (miniaturas) na parte inferior ── */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 max-w-md overflow-x-auto px-4 py-2 rounded-2xl bg-black/30 backdrop-blur-xl border border-white/10">
-              {itensLightbox.map((item, i) => (
-                <button
-                  key={item.id}
-                  onClick={(e) => { e.stopPropagation(); setLightboxIndex(i); }}
-                  className={`relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300 border-2 ${
-                    i === lightboxIndex
-                      ? 'border-white scale-110 shadow-lg shadow-white/20'
-                      : 'border-transparent opacity-50 hover:opacity-80'
-                  }`}
+            {/* 3. RODAPÉ DE INFORMAÇÕES E CONTROLES (Base) */}
+            <div className="relative z-50 w-full bg-gradient-to-t from-black via-black/80 to-transparent pt-10 pb-8 px-6">
+              <div className="max-w-3xl mx-auto flex flex-col gap-6">
+                
+                {/* Info Box - Glassmorphism */}
+                <motion.div
+                  key={`info-${lightboxIndex}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="p-5 sm:p-6 rounded-[2rem] bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl relative overflow-hidden group"
+                  onClick={(e) => e.stopPropagation()}
                 >
-                  <Image
-                    src={item.imagem_url}
-                    alt={item.titulo}
-                    fill
-                    className="object-cover"
-                    sizes="60px"
+                  <div 
+                    className="absolute inset-y-0 left-0 w-1.5"
+                    style={{ background: `linear-gradient(to bottom, ${itensLightbox[lightboxIndex].cor_inicio}, ${itensLightbox[lightboxIndex].cor_fim})` }}
                   />
-                </button>
-              ))}
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-3">
+                      {(() => {
+                        const Ico = ICON_MAP[itensLightbox[lightboxIndex].icone_slug] || Camera;
+                        return (
+                          <div
+                            className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                            style={{ backgroundColor: `${itensLightbox[lightboxIndex].cor_inicio}22` }}
+                          >
+                            <Ico className="w-5 h-5" style={{ color: itensLightbox[lightboxIndex].cor_inicio }} />
+                          </div>
+                        );
+                      })()}
+                      <h3 className="text-xl sm:text-2xl font-black text-white" style={{ fontFamily: 'var(--font-poppins)' }}>
+                        {itensLightbox[lightboxIndex].titulo}
+                      </h3>
+                    </div>
+                    <p className="text-white/60 text-sm sm:text-base leading-relaxed pl-[3.25rem]" style={{ fontFamily: 'var(--font-quicksand)' }}>
+                      {itensLightbox[lightboxIndex].descricao}
+                    </p>
+                  </div>
+                </motion.div>
+
+                {/* Controles e Thumbnails */}
+                <div className="flex flex-col items-center gap-6">
+                   {/* Setas Mobile */}
+                   <div className="flex lg:hidden items-center gap-10">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); irAnterior(); }}
+                        className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
+                      >
+                        <ChevronLeft className="w-6 h-6" />
+                      </button>
+                      <button
+                        onClick={(e) => { e.stopPropagation(); irProximo(); }}
+                        className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white active:scale-90 transition-transform"
+                      >
+                        <ChevronRight className="w-6 h-6" />
+                      </button>
+                   </div>
+
+                   {/* Thumbnails */}
+                   <div className="flex gap-3 overflow-x-auto py-2 px-2 max-w-full no-scrollbar">
+                      {itensLightbox.map((item, i) => (
+                        <button
+                          key={item.id}
+                          onClick={(e) => { e.stopPropagation(); setLightboxIndex(i); }}
+                          className={`relative w-14 h-14 rounded-xl overflow-hidden shrink-0 transition-all duration-500 border-2 ${
+                            i === lightboxIndex
+                              ? 'border-white scale-110 shadow-[0_0_15px_rgba(255,255,255,0.3)]'
+                              : 'border-transparent opacity-30 hover:opacity-60 scale-90'
+                          }`}
+                        >
+                          <Image
+                            src={item.imagem_url}
+                            alt={item.titulo}
+                            fill
+                            className="object-cover"
+                            sizes="80px"
+                          />
+                        </button>
+                      ))}
+                   </div>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}

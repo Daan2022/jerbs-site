@@ -9,7 +9,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Save, MapPin, Phone, MessageCircle, Mail, Clock, Instagram, Facebook, Loader2, CheckCircle } from 'lucide-react';
+import { Save, MapPin, Phone, MessageCircle, Mail, Clock, Instagram, Facebook, Loader2, CheckCircle, X } from 'lucide-react';
 import { buscarConfiguracoes, atualizarConfiguracoes, ConfiguracoesEscola } from '@/services/configuracoesService';
 
 export default function ConfiguracoesAdmin() {
@@ -128,6 +128,7 @@ export default function ConfiguracoesAdmin() {
           </div>
         </section>
 
+
         {/* ── Seção: Operacional e Social ── */}
         <section className="bg-white/5 border border-white/10 rounded-[32px] p-8 backdrop-blur-md">
           <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
@@ -144,7 +145,7 @@ export default function ConfiguracoesAdmin() {
                   name="horario_funcionamento"
                   value={config?.horario_funcionamento || ''}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:border-[#008FC7] transition-colors"
+                  className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:border-[#008FC7] transition-colors text-white"
                 />
               </div>
             </div>
@@ -158,7 +159,7 @@ export default function ConfiguracoesAdmin() {
                     name="instagram_url"
                     value={config?.instagram_url || ''}
                     onChange={handleChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:border-[#008FC7] transition-colors"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:border-[#008FC7] transition-colors text-white"
                   />
                 </div>
               </div>
@@ -170,9 +171,175 @@ export default function ConfiguracoesAdmin() {
                     name="facebook_url"
                     value={config?.facebook_url || ''}
                     onChange={handleChange}
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:border-[#008FC7] transition-colors"
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-4 focus:outline-none focus:border-[#008FC7] transition-colors text-white"
                   />
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Seção: Opções do Formulário de Contato ── */}
+        <section className="bg-white/5 border border-white/10 rounded-[32px] p-8 backdrop-blur-md">
+          <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+            <CheckCircle size={24} className="text-[#95D5B2]" />
+            Opções do Formulário de Contato
+          </h3>
+
+          <div className="space-y-8">
+            {/* Faixas Etárias */}
+            <div className="space-y-4">
+              <label className="text-sm font-semibold text-white/60 block">Faixas Etárias Disponíveis</label>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {config?.faixas_etarias.map((faixa, idx) => (
+                  <span key={idx} className="px-4 py-2 bg-[#008FC7]/20 border border-[#008FC7]/40 rounded-full text-sm font-medium text-white flex items-center gap-2">
+                    {faixa}
+                    <button 
+                      type="button" 
+                      onClick={() => {
+                        const novaLista = config.faixas_etarias.filter((_, i) => i !== idx);
+                        setConfig({ ...config, faixas_etarias: novaLista });
+                      }}
+                      className="hover:text-red-400 transition-colors"
+                    >
+                      <X size={14} />
+                    </button>
+                  </span>
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <input 
+                  id="new-faixa"
+                  placeholder="Ex: Berçário (4 meses – 1 ano)"
+                  className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-[#008FC7] transition-colors text-white"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      const val = (e.target as HTMLInputElement).value;
+                      if (val && config) {
+                        setConfig({ ...config, faixas_etarias: [...config.faixas_etarias, val] });
+                        (e.target as HTMLInputElement).value = '';
+                      }
+                    }
+                  }}
+                />
+                <button 
+                  type="button"
+                  onClick={() => {
+                    const input = document.getElementById('new-faixa') as HTMLInputElement;
+                    if (input.value && config) {
+                      setConfig({ ...config, faixas_etarias: [...config.faixas_etarias, input.value] });
+                      input.value = '';
+                    }
+                  }}
+                  className="px-4 bg-white/10 hover:bg-white/20 rounded-xl transition-colors font-bold text-white"
+                >
+                  Adicionar
+                </button>
+              </div>
+            </div>
+
+            {/* Turnos */}
+            <div className="space-y-4">
+              <label className="text-sm font-semibold text-white/60 block">Turnos em Funcionamento</label>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {config?.turnos.map((turno, idx) => (
+                  <span key={idx} className="px-4 py-2 bg-[#FBB03B]/20 border border-[#FBB03B]/40 rounded-full text-sm font-medium text-white flex items-center gap-2">
+                    {turno}
+                    <button 
+                      type="button"
+                      onClick={() => {
+                        const novaLista = config.turnos.filter((_, i) => i !== idx);
+                        setConfig({ ...config, turnos: novaLista });
+                      }}
+                      className="hover:text-red-400 transition-colors"
+                    >
+                      <X size={14} />
+                    </button>
+                  </span>
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <input 
+                  id="new-turno"
+                  placeholder="Ex: Manhã / Tarde"
+                  className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-[#FBB03B] transition-colors text-white"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      const val = (e.target as HTMLInputElement).value;
+                      if (val && config) {
+                        setConfig({ ...config, turnos: [...config.turnos, val] });
+                        (e.target as HTMLInputElement).value = '';
+                      }
+                    }
+                  }}
+                />
+                <button 
+                  type="button"
+                  onClick={() => {
+                    const input = document.getElementById('new-turno') as HTMLInputElement;
+                    if (input.value && config) {
+                      setConfig({ ...config, turnos: [...config.turnos, input.value] });
+                      input.value = '';
+                    }
+                  }}
+                  className="px-4 bg-white/10 hover:bg-white/20 rounded-xl transition-colors font-bold text-white"
+                >
+                  Adicionar
+                </button>
+              </div>
+            </div>
+
+            {/* Objetivos */}
+            <div className="space-y-4">
+              <label className="text-sm font-semibold text-white/60 block">Objetivos de Contato</label>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {config?.objetivos.map((obj, idx) => (
+                  <span key={idx} className="px-4 py-2 bg-emerald-500/20 border border-emerald-500/40 rounded-full text-sm font-medium text-white flex items-center gap-2">
+                    {obj}
+                    <button 
+                      type="button"
+                      onClick={() => {
+                        const novaLista = config.objetivos.filter((_, i) => i !== idx);
+                        setConfig({ ...config, objetivos: novaLista });
+                      }}
+                      className="hover:text-red-400 transition-colors"
+                    >
+                      <X size={14} />
+                    </button>
+                  </span>
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <input 
+                  id="new-objetivo"
+                  placeholder="Ex: Informações de matrícula"
+                  className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 transition-colors text-white"
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      const val = (e.target as HTMLInputElement).value;
+                      if (val && config) {
+                        setConfig({ ...config, objetivos: [...config.objetivos, val] });
+                        (e.target as HTMLInputElement).value = '';
+                      }
+                    }
+                  }}
+                />
+                <button 
+                  type="button"
+                  onClick={() => {
+                    const input = document.getElementById('new-objetivo') as HTMLInputElement;
+                    if (input.value && config) {
+                      setConfig({ ...config, objetivos: [...config.objetivos, input.value] });
+                      input.value = '';
+                    }
+                  }}
+                  className="px-4 bg-white/10 hover:bg-white/20 rounded-xl transition-colors font-bold text-white"
+                >
+                  Adicionar
+                </button>
               </div>
             </div>
           </div>

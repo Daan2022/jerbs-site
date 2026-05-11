@@ -119,7 +119,10 @@ export default function HeroSection() {
 
 
   return (
-    <section id="hero" className="relative min-h-[850px] lg:h-screen lg:min-h-[800px] flex items-center overflow-hidden pt-32 pb-24 lg:pt-20 lg:pb-0 bg-[#FDFAF6]">
+    <section 
+      id="hero" 
+      className="relative min-h-screen flex items-center overflow-hidden pt-36 pb-32 lg:pt-40 lg:pb-40 bg-[#FDFAF6]"
+    >
       
       {/* ── Background Layer ── */}
       <div className="absolute inset-0 z-0">
@@ -223,9 +226,9 @@ export default function HeroSection() {
                   </span>
                 </div>
 
-                {/* Título Principal - Responsivo */}
+                {/* Título Principal - Responsivo com interlineado corrigido */}
                 <h1 
-                  className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black leading-[1.1] mb-6 text-[#2D2D2D]"
+                  className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black leading-[1.2] lg:leading-[1.15] mb-6 text-[#2D2D2D] tracking-tight"
                   style={{ fontFamily: 'var(--font-poppins)' }}
                   dangerouslySetInnerHTML={{ __html: slideAtual.titulo_principal }}
                 />

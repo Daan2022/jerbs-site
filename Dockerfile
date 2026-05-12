@@ -1,5 +1,5 @@
 # Estágio 1: Instalação de dependências e build
-FROM node:20-alphine AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Copia os arquivos de dependências

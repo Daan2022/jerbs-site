@@ -6,12 +6,13 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+// Durante o build no GitHub Actions, essas variáveis não existem. 
+// Usamos valores de "mentira" apenas para o build não travar.
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://tmp-project.supabase.co';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'tmp-key';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  // Logamos um aviso mas não travamos o build
-  console.warn('⚠️ Variáveis de ambiente do Supabase não encontradas. Isso é normal durante o build se não foram passadas como segredos.');
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
+  console.warn('⚠️ Usando Supabase URL temporária para o Build.');
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);

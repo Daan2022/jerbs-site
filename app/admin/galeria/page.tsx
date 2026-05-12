@@ -46,6 +46,7 @@ export default function GaleriaAdmin() {
         id: null as any,
         titulo: '',
         descricao: '',
+        categoria: 'Geral',
         icone_slug: 'camera',
         cor_inicio: '#008FC7',
         cor_fim: '#1C75BC',
@@ -182,7 +183,7 @@ export default function GaleriaAdmin() {
               </div>
 
               <form onSubmit={handleSave} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6">
                   <div className="space-y-2">
                     <label className="text-sm font-semibold text-white/60">Título</label>
                     <input
@@ -193,6 +194,22 @@ export default function GaleriaAdmin() {
                       className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 focus:outline-none focus:border-[#008FC7] transition-colors"
                       placeholder="Ex: Festa da Família"
                     />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-semibold text-white/60">Categoria</label>
+                    <select
+                      value={editingItem?.categoria || 'Geral'}
+                      onChange={(e) => setEditingItem(prev => prev ? { ...prev, categoria: e.target.value } : null)}
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 focus:outline-none focus:border-[#008FC7] transition-colors"
+                    >
+                      <option value="Geral" className="bg-[#16162A]">Geral</option>
+                      <option value="Eventos" className="bg-[#16162A]">Eventos</option>
+                      <option value="Infraestrutura" className="bg-[#16162A]">Infraestrutura</option>
+                      <option value="Aulas" className="bg-[#16162A]">Aulas</option>
+                    </select>
                   </div>
                   <div className="space-y-2">
                     <ImageUpload 

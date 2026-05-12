@@ -18,6 +18,11 @@ export default function ConfiguracoesAdmin() {
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
+  // Estados para novos itens das listas
+  const [newFaixa, setNewFaixa] = useState('');
+  const [newTurno, setNewTurno] = useState('');
+  const [newObjetivo, setNewObjetivo] = useState('');
+
   useEffect(() => {
     async function load() {
       const data = await buscarConfiguracoes();
@@ -205,8 +210,11 @@ export default function ConfiguracoesAdmin() {
                     <button 
                       type="button" 
                       onClick={() => {
-                        const novaLista = (config.faixas_etarias || []).filter((_, i) => i !== idx);
-                        setConfig({ ...config, faixas_etarias: novaLista });
+                        setConfig(prev => {
+                          if (!prev) return null;
+                          const novaLista = (prev.faixas_etarias || []).filter((_, i) => i !== idx);
+                          return { ...prev, faixas_etarias: novaLista };
+                        });
                       }}
                       className="hover:text-red-400 transition-colors"
                     >
@@ -217,16 +225,16 @@ export default function ConfiguracoesAdmin() {
               </div>
               <div className="flex gap-2">
                 <input 
-                  id="new-faixa"
+                  value={newFaixa}
+                  onChange={(e) => setNewFaixa(e.target.value)}
                   placeholder="Ex: Berçário (4 meses – 1 ano)"
                   className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-[#008FC7] transition-colors text-white"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
-                      const val = (e.target as HTMLInputElement).value;
-                      if (val && config) {
-                        setConfig({ ...config, faixas_etarias: [...config.faixas_etarias, val] });
-                        (e.target as HTMLInputElement).value = '';
+                      if (newFaixa.trim() && config) {
+                        setConfig(prev => prev ? { ...prev, faixas_etarias: [...prev.faixas_etarias, newFaixa.trim()] } : null);
+                        setNewFaixa('');
                       }
                     }
                   }}
@@ -234,10 +242,9 @@ export default function ConfiguracoesAdmin() {
                 <button 
                   type="button"
                   onClick={() => {
-                    const input = document.getElementById('new-faixa') as HTMLInputElement;
-                    if (input.value && config) {
-                      setConfig({ ...config, faixas_etarias: [...config.faixas_etarias, input.value] });
-                      input.value = '';
+                    if (newFaixa.trim() && config) {
+                      setConfig(prev => prev ? { ...prev, faixas_etarias: [...prev.faixas_etarias, newFaixa.trim()] } : null);
+                      setNewFaixa('');
                     }
                   }}
                   className="px-4 bg-white/10 hover:bg-white/20 rounded-xl transition-colors font-bold text-white"
@@ -257,8 +264,11 @@ export default function ConfiguracoesAdmin() {
                     <button 
                       type="button"
                       onClick={() => {
-                        const novaLista = (config.turnos || []).filter((_, i) => i !== idx);
-                        setConfig({ ...config, turnos: novaLista });
+                        setConfig(prev => {
+                          if (!prev) return null;
+                          const novaLista = (prev.turnos || []).filter((_, i) => i !== idx);
+                          return { ...prev, turnos: novaLista };
+                        });
                       }}
                       className="hover:text-red-400 transition-colors"
                     >
@@ -269,16 +279,16 @@ export default function ConfiguracoesAdmin() {
               </div>
               <div className="flex gap-2">
                 <input 
-                  id="new-turno"
+                  value={newTurno}
+                  onChange={(e) => setNewTurno(e.target.value)}
                   placeholder="Ex: Manhã / Tarde"
                   className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-[#FBB03B] transition-colors text-white"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
-                      const val = (e.target as HTMLInputElement).value;
-                      if (val && config) {
-                        setConfig({ ...config, turnos: [...config.turnos, val] });
-                        (e.target as HTMLInputElement).value = '';
+                      if (newTurno.trim() && config) {
+                        setConfig(prev => prev ? { ...prev, turnos: [...prev.turnos, newTurno.trim()] } : null);
+                        setNewTurno('');
                       }
                     }
                   }}
@@ -286,10 +296,9 @@ export default function ConfiguracoesAdmin() {
                 <button 
                   type="button"
                   onClick={() => {
-                    const input = document.getElementById('new-turno') as HTMLInputElement;
-                    if (input.value && config) {
-                      setConfig({ ...config, turnos: [...config.turnos, input.value] });
-                      input.value = '';
+                    if (newTurno.trim() && config) {
+                      setConfig(prev => prev ? { ...prev, turnos: [...prev.turnos, newTurno.trim()] } : null);
+                      setNewTurno('');
                     }
                   }}
                   className="px-4 bg-white/10 hover:bg-white/20 rounded-xl transition-colors font-bold text-white"
@@ -309,8 +318,11 @@ export default function ConfiguracoesAdmin() {
                     <button 
                       type="button"
                       onClick={() => {
-                        const novaLista = (config.objetivos || []).filter((_, i) => i !== idx);
-                        setConfig({ ...config, objetivos: novaLista });
+                        setConfig(prev => {
+                          if (!prev) return null;
+                          const novaLista = (prev.objetivos || []).filter((_, i) => i !== idx);
+                          return { ...prev, objetivos: novaLista };
+                        });
                       }}
                       className="hover:text-red-400 transition-colors"
                     >
@@ -321,16 +333,16 @@ export default function ConfiguracoesAdmin() {
               </div>
               <div className="flex gap-2">
                 <input 
-                  id="new-objetivo"
+                  value={newObjetivo}
+                  onChange={(e) => setNewObjetivo(e.target.value)}
                   placeholder="Ex: Informações de matrícula"
                   className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500 transition-colors text-white"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
-                      const val = (e.target as HTMLInputElement).value;
-                      if (val && config) {
-                        setConfig({ ...config, objetivos: [...config.objetivos, val] });
-                        (e.target as HTMLInputElement).value = '';
+                      if (newObjetivo.trim() && config) {
+                        setConfig(prev => prev ? { ...prev, objetivos: [...prev.objetivos, newObjetivo.trim()] } : null);
+                        setNewObjetivo('');
                       }
                     }
                   }}
@@ -338,10 +350,9 @@ export default function ConfiguracoesAdmin() {
                 <button 
                   type="button"
                   onClick={() => {
-                    const input = document.getElementById('new-objetivo') as HTMLInputElement;
-                    if (input.value && config) {
-                      setConfig({ ...config, objetivos: [...config.objetivos, input.value] });
-                      input.value = '';
+                    if (newObjetivo.trim() && config) {
+                      setConfig(prev => prev ? { ...prev, objetivos: [...prev.objetivos, newObjetivo.trim()] } : null);
+                      setNewObjetivo('');
                     }
                   }}
                   className="px-4 bg-white/10 hover:bg-white/20 rounded-xl transition-colors font-bold text-white"

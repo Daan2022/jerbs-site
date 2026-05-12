@@ -9,15 +9,13 @@ import { supabase } from './supabaseClient';
 
 export interface ConfiguracoesEscola {
   id: number;
-  nome_escola: string;
+  telefone: string;
   whatsapp: string;
   email: string;
   endereco: string;
   instagram_url: string;
   facebook_url: string;
-  youtube_url: string;
   horario_funcionamento: string;
-  ano_letivo_atual: number;
   // Campos dinâmicos para o formulário de contato
   faixas_etarias: string[];
   turnos: string[];

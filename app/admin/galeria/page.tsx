@@ -2,7 +2,6 @@
  * app/admin/galeria/page.tsx
  * ─────────────────────────────────────────────────────────────────────────────
  * Gerenciamento da Galeria de Fotos.
- * Permite adicionar, editar e excluir itens da galeria.
  */
 
 'use client';
@@ -13,6 +12,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Trash2, Edit2, Save, X, Image as ImageIcon, Loader2 } from 'lucide-react';
 import { buscarGaleria, salvarItemGaleria, excluirItemGaleria, ItemGaleria } from '@/services/supabaseService';
 import ImageUpload from '@/components/admin/ImageUpload';
+
+export const dynamic = 'force-dynamic';
 
 export default function GaleriaAdmin() {
   const [itens, setItens] = useState<ItemGaleria[]>([]);

@@ -12,6 +12,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Trash2, Edit2, Save, X, Layout, Loader2 } from 'lucide-react';
 import { buscarSlidesHero, salvarSlideHero, excluirSlideHero, type SlideHero } from '@/services/heroService';
 import ImageUpload from '@/components/admin/ImageUpload';
+
+export const dynamic = 'force-dynamic';
  
 // ─── Sub-componente: Imagem com Fallback ──────────────────────────────────
 function AdminSlideImage({ src, alt }: { src: string; alt: string }) {

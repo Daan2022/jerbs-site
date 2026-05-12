@@ -12,6 +12,8 @@ import { motion } from 'framer-motion';
 import { Save, MapPin, Phone, MessageCircle, Mail, Clock, Instagram, Facebook, Loader2, CheckCircle, X } from 'lucide-react';
 import { buscarConfiguracoes, atualizarConfiguracoes, ConfiguracoesEscola } from '@/services/configuracoesService';
 
+export const dynamic = 'force-dynamic';
+
 export default function ConfiguracoesAdmin() {
   const [config, setConfig] = useState<ConfiguracoesEscola | null>(null);
   const [loading, setLoading] = useState(true);

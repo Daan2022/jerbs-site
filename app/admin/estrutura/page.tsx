@@ -17,6 +17,8 @@ import {
 import { buscarInstalacoes, salvarInstalacao, excluirInstalacao, type Instalacao } from '@/services/supabaseService';
 import ImageUpload from '@/components/admin/ImageUpload';
 
+export const dynamic = 'force-dynamic';
+
 // Lista de ícones disponíveis para escolha
 const ICON_LIST = [
   { name: 'Escola', value: 'School', icon: <School size={16} /> },

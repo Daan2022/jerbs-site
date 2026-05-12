@@ -7,9 +7,19 @@ services:
     container_name: escola-jerbs-app
     restart: always
     environment:
-      # Adicione aqui suas variáveis de ambiente do Supabase
-      - NEXT_PUBLIC_SUPABASE_URL=https://evjqgxfwjqjvzntgbfby.supabase.co
-      - NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_3nDrH2WDFfAiq6fqXcnGJQ_h1-9uKx4
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+
+    # -----------------------------------------------------
+    # INÍCIO DA ALTERAÇÃO
+    # -----------------------------------------------------
+    # Abrimos a porta 3000 diretamente para teste via IP
+    ports:
+      - "3000:3000"
+    # -----------------------------------------------------
+    # FIM DA ALTERAÇÃO
+    # -----------------------------------------------------
+
     networks:
       - network_public
     deploy:
@@ -18,7 +28,6 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.docker.network=network_public"
-        # Substitua pelo domínio real da landing page
         - "traefik.http.routers.escola-jerbs.rule=Host(`escolajerbs.com.br`, `www.escolajerbs.com.br`)"
         - "traefik.http.routers.escola-jerbs.entrypoints=websecure"
         - "traefik.http.routers.escola-jerbs.tls.certresolver=letsencryptresolver"

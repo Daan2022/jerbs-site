@@ -37,4 +37,4 @@ networks:
   network_public:
     external: true
     # ADICIONE A LINHA ABAIXO COM O NOME EXATO QUE VOCÊ COPIOU NO PASSO 1
-    name: traefik_network_public
+    name: network_public

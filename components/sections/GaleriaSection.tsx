@@ -54,7 +54,15 @@ function GaleriaCard({
   layoutClass: string;
   onClick: () => void;
 }) {
-  const IconComponent = ICON_MAP[item.icone_slug] || Camera;
+  // Lógica para definir ícone e cores com base na categoria (estratégia de Arquiteto Sênior)
+  const configVisual = {
+    'Atividades': { icone: Camera, cor_inicio: '#008FC7', cor_fim: '#1C75BC' },
+    'Educação': { icone: Star, cor_inicio: '#FBB03B', cor_fim: '#C1272D' },
+    'Infraestrutura': { icone: Building2, cor_inicio: '#95D5B2', cor_fim: '#52B788' },
+    'Berçário': { icone: Heart, cor_inicio: '#C77DFF', cor_fim: '#9B59B6' },
+  }[item.categoria] || { icone: Camera, cor_inicio: '#008FC7', cor_fim: '#1C75BC' };
+
+  const IconComponent = configVisual.icone;
   
   // Verifica se o card é grande APENAS no desktop (md: para cima)
   // Isso evita que o minHeight force um tamanho errado no mobile
@@ -87,7 +95,7 @@ function GaleriaCard({
       <div
         className="absolute inset-0 transition-opacity duration-500"
         style={{
-          background: `linear-gradient(160deg, ${item.cor_inicio}44 0%, transparent 40%, ${item.cor_fim}BB 100%)`,
+          background: `linear-gradient(160deg, ${configVisual.cor_inicio}44 0%, transparent 40%, ${configVisual.cor_fim}BB 100%)`,
         }}
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/10 group-hover:from-black/50 transition-all duration-500" />
@@ -96,14 +104,14 @@ function GaleriaCard({
       <div className="absolute top-4 left-4 z-20">
         <div
           className="flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-xl border border-white/20 shadow-lg"
-          style={{ backgroundColor: `${item.cor_inicio}33` }}
+          style={{ backgroundColor: `${configVisual.cor_inicio}33` }}
         >
           <IconComponent className="w-3.5 h-3.5 text-white" />
           <span
             className="text-[10px] font-bold text-white uppercase tracking-wider"
             style={{ fontFamily: 'var(--font-quicksand)' }}
           >
-            {item.id.replace(/-/g, ' ')}
+            {item.categoria}
           </span>
         </div>
       </div>
@@ -128,7 +136,7 @@ function GaleriaCard({
             className={`text-white/80 font-medium line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 text-sm`}
             style={{ fontFamily: 'var(--font-quicksand)' }}
           >
-            {item.descricao}
+            {item.categoria}
           </p>
         </div>
 
@@ -136,7 +144,7 @@ function GaleriaCard({
         <div className="mt-3 h-0.5 rounded-full bg-white/20 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-200">
           <motion.div
             className="h-full rounded-full"
-            style={{ background: `linear-gradient(90deg, ${item.cor_inicio}, ${item.cor_fim})` }}
+            style={{ background: `linear-gradient(90deg, ${configVisual.cor_inicio}, ${configVisual.cor_fim})` }}
             initial={{ width: '0%' }}
             whileInView={{ width: '100%' }}
             transition={{ duration: 1.5, delay: 0.3 }}
@@ -418,31 +426,42 @@ export default function GaleriaSection() {
                   className="p-5 sm:p-6 rounded-[2rem] bg-white/5 backdrop-blur-2xl border border-white/10 shadow-2xl relative overflow-hidden group"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div 
-                    className="absolute inset-y-0 left-0 w-1.5"
-                    style={{ background: `linear-gradient(to bottom, ${itensLightbox[lightboxIndex].cor_inicio}, ${itensLightbox[lightboxIndex].cor_fim})` }}
-                  />
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-3">
-                      {(() => {
-                        const Ico = ICON_MAP[itensLightbox[lightboxIndex].icone_slug] || Camera;
-                        return (
-                          <div
-                            className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
-                            style={{ backgroundColor: `${itensLightbox[lightboxIndex].cor_inicio}22` }}
-                          >
-                            <Ico className="w-5 h-5" style={{ color: itensLightbox[lightboxIndex].cor_inicio }} />
+                  {(() => {
+                    const itemAtual = itensLightbox[lightboxIndex];
+                    const configV = {
+                      'Atividades': { icone: Camera, cor_inicio: '#008FC7', cor_fim: '#1C75BC' },
+                      'Educação': { icone: Star, cor_inicio: '#FBB03B', cor_fim: '#C1272D' },
+                      'Infraestrutura': { icone: Building2, cor_inicio: '#95D5B2', cor_fim: '#52B788' },
+                      'Berçário': { icone: Heart, cor_inicio: '#C77DFF', cor_fim: '#9B59B6' },
+                    }[itemAtual.categoria] || { icone: Camera, cor_inicio: '#008FC7', cor_fim: '#1C75BC' };
+                    
+                    const Ico = configV.icone;
+
+                    return (
+                      <>
+                        <div 
+                          className="absolute inset-y-0 left-0 w-1.5"
+                          style={{ background: `linear-gradient(to bottom, ${configV.cor_inicio}, ${configV.cor_fim})` }}
+                        />
+                        <div className="flex flex-col gap-2">
+                          <div className="flex items-center gap-3">
+                            <div
+                              className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
+                              style={{ backgroundColor: `${configV.cor_inicio}22` }}
+                            >
+                              <Ico className="w-5 h-5" style={{ color: configV.cor_inicio }} />
+                            </div>
+                            <h3 className="text-xl sm:text-2xl font-black text-white" style={{ fontFamily: 'var(--font-poppins)' }}>
+                              {itemAtual.titulo}
+                            </h3>
                           </div>
-                        );
-                      })()}
-                      <h3 className="text-xl sm:text-2xl font-black text-white" style={{ fontFamily: 'var(--font-poppins)' }}>
-                        {itensLightbox[lightboxIndex].titulo}
-                      </h3>
-                    </div>
-                    <p className="text-white/60 text-sm sm:text-base leading-relaxed pl-[3.25rem]" style={{ fontFamily: 'var(--font-quicksand)' }}>
-                      {itensLightbox[lightboxIndex].descricao}
-                    </p>
-                  </div>
+                          <p className="text-white/60 text-sm sm:text-base leading-relaxed pl-[3.25rem]" style={{ fontFamily: 'var(--font-quicksand)' }}>
+                            Categoria: {itemAtual.categoria}
+                          </p>
+                        </div>
+                      </>
+                    );
+                  })()}
                 </motion.div>
 
                 {/* Controles e Thumbnails */}

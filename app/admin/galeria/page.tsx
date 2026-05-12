@@ -8,6 +8,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Trash2, Edit2, Save, X, Image as ImageIcon, Loader2 } from 'lucide-react';
 import { buscarGaleria, salvarItemGaleria, excluirItemGaleria, ItemGaleria } from '@/services/supabaseService';
@@ -18,6 +19,8 @@ export default function GaleriaAdmin() {
   const [loading, setLoading] = useState(true);
   const [editingItem, setEditingItem] = useState<ItemGaleria | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<string | number | null>(null);
 
   useEffect(() => {
     carregarDados();
@@ -40,7 +43,7 @@ export default function GaleriaAdmin() {
       setEditingItem(item);
     } else {
       setEditingItem({
-        id: Math.random().toString(36).substr(2, 9),
+        id: null as any,
         titulo: '',
         descricao: '',
         icone_slug: 'camera',
@@ -67,14 +70,24 @@ export default function GaleriaAdmin() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm('Tem certeza que deseja excluir esta imagem?')) {
-      try {
-        await excluirItemGaleria(id);
+  const handleDelete = (id: string | number) => {
+    setItemToDelete(id);
+    setIsDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!itemToDelete) return;
+    try {
+      const ok = await excluirItemGaleria(itemToDelete);
+      if (ok) {
+        setIsDeleteModalOpen(false);
+        setItemToDelete(null);
         carregarDados();
-      } catch (error) {
-        alert('Erro ao excluir item');
+      } else {
+        alert('Erro ao excluir item no banco.');
       }
+    } catch (error) {
+      console.error('Erro ao excluir:', error);
     }
   };
 
@@ -108,7 +121,13 @@ export default function GaleriaAdmin() {
             >
               <div className="aspect-video relative overflow-hidden bg-white/5">
                 {item.imagem_url ? (
-                  <img src={item.imagem_url} alt={item.titulo} className="w-full h-full object-cover transition-transform group-hover:scale-110" />
+                  <Image 
+                    src={item.imagem_url} 
+                    alt={item.titulo} 
+                    fill 
+                    className="object-cover transition-transform group-hover:scale-110" 
+                    sizes="(max-width: 640px) 100vw, 33vw"
+                  />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-white/20">
                     <ImageIcon size={40} />
@@ -176,7 +195,6 @@ export default function GaleriaAdmin() {
                     />
                   </div>
                   <div className="space-y-2">
-                    {/* Componente de Upload de Imagem */}
                     <ImageUpload 
                       label="Foto da Galeria"
                       value={editingItem?.imagem_url || ''}
@@ -248,6 +266,49 @@ export default function GaleriaAdmin() {
                   </button>
                 </div>
               </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Modal de Confirmação de Exclusão ── */}
+      <AnimatePresence>
+        {isDeleteModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/80 backdrop-blur-md"
+              onClick={() => setIsDeleteModalOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="relative w-full max-w-md bg-[#16162A] border border-white/10 rounded-[32px] p-8 shadow-2xl text-center"
+            >
+              <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Trash2 size={40} className="text-red-500" />
+              </div>
+              <h3 className="text-2xl font-bold mb-2">Excluir Foto?</h3>
+              <p className="text-white/60 mb-8">
+                Esta imagem será removida permanentemente da galeria do site.
+              </p>
+              <div className="flex gap-4">
+                <button
+                  onClick={() => setIsDeleteModalOpen(false)}
+                  className="flex-1 px-6 py-4 rounded-2xl bg-white/5 hover:bg-white/10 font-bold transition-all"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={confirmDelete}
+                  className="flex-1 px-6 py-4 rounded-2xl bg-red-500 hover:bg-red-600 font-bold transition-all shadow-lg shadow-red-500/20"
+                >
+                  Sim, Excluir
+                </button>
+              </div>
             </motion.div>
           </div>
         )}

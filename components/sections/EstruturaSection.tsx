@@ -12,7 +12,8 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Building2, TreePine, Dumbbell, Monitor, Coffee, Shield, X, 
-  ChevronLeft, ChevronRight, type LucideIcon 
+  ChevronLeft, ChevronRight, type LucideIcon,
+  School, BookOpen, Music, Play, Heart, Star, Camera, Zap, MapPin
 } from 'lucide-react';
 import { buscarInstalacoes, type Instalacao } from '@/services/supabaseService';
 
@@ -24,27 +25,37 @@ const ICON_MAP: Record<string, LucideIcon> = {
   monitor: Monitor,
   coffee: Coffee,
   shield: Shield,
+  School: School,
+  Coffee: Coffee,
+  BookOpen: BookOpen,
+  Music: Music,
+  Play: Play,
+  Heart: Heart,
+  Star: Star,
+  Camera: Camera,
+  Zap: Zap,
+  MapPin: MapPin,
 };
 
 export default function EstruturaSection() {
   const [instalacoes, setInstalacoes] = useState<Instalacao[]>([
     {
       id: 1,
-      nome: 'Salas de Aula',
+      titulo: 'Salas de Aula',
       descricao: 'Espaços climatizados e lúdicos projetados para cada fase do aprendizado.',
-      icone_slug: 'building',
-      cor_fundo: '#E8F4FD',
-      cor_primaria: '#008FC7',
+      icone: 'building',
       imagem_url: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&q=80&w=800',
+      categoria: 'Infraestrutura',
+      ordem: 1
     },
     {
       id: 2,
-      nome: 'Área Externa',
+      titulo: 'Área Externa',
       descricao: 'Amplo espaço para brincadeiras ao ar livre e integração com a natureza.',
-      icone_slug: 'tree',
-      cor_fundo: '#E9F7EF',
-      cor_primaria: '#1DB954',
+      icone: 'tree',
       imagem_url: 'https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&q=80&w=800',
+      categoria: 'Infraestrutura',
+      ordem: 2
     }
   ]);
   const [loading, setLoading] = useState(false);
@@ -133,7 +144,7 @@ export default function EstruturaSection() {
           {/* ─── Grid de Cards ─── */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {instalacoes.map((espaco, index) => {
-              const IconComponent = ICON_MAP[espaco.icone_slug] || Building2;
+              const IconComponent = ICON_MAP[espaco.icone] || Building2;
               
               return (
                 <motion.div
@@ -150,7 +161,7 @@ export default function EstruturaSection() {
                   <div className="relative w-full h-48 overflow-hidden">
                     <Image
                       src={espaco.imagem_url}
-                      alt={`Foto: ${espaco.nome}`}
+                      alt={`Foto: ${espaco.titulo}`}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-110"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -163,15 +174,12 @@ export default function EstruturaSection() {
 
                   {/* Conteúdo */}
                   <div className="p-5 flex gap-3 items-start">
-                    <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
-                      style={{ backgroundColor: espaco.cor_fundo, color: espaco.cor_primaria }}
-                    >
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 bg-[#008FC7]/10 text-[#008FC7]">
                       <IconComponent className="w-5 h-5" />
                     </div>
                     <div>
                       <h4 className="font-bold text-[#2D2D2D] mb-1 text-base" style={{ fontFamily: 'var(--font-poppins)' }}>
-                        {espaco.nome}
+                        {espaco.titulo}
                       </h4>
                       <p className="text-sm text-[#5A5A6A] leading-relaxed font-medium" style={{ fontFamily: 'var(--font-quicksand)' }}>
                         {espaco.descricao}
@@ -205,7 +213,7 @@ export default function EstruturaSection() {
               <div className="relative w-full h-[50vh] sm:h-[60vh]">
                 <Image
                   src={instalacoes[lightboxIndex].imagem_url}
-                  alt={instalacoes[lightboxIndex].nome}
+                  alt={instalacoes[lightboxIndex].titulo}
                   fill
                   className="object-cover"
                   priority
@@ -214,16 +222,15 @@ export default function EstruturaSection() {
 
               <div className="p-6 flex items-center gap-4">
                 <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
-                  style={{ backgroundColor: instalacoes[lightboxIndex].cor_fundo, color: instalacoes[lightboxIndex].cor_primaria }}
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 bg-[#008FC7]/10 text-[#008FC7]"
                 >
                   {(() => {
-                    const IconComp = ICON_MAP[instalacoes[lightboxIndex].icone_slug] || Building2;
+                    const IconComp = ICON_MAP[instalacoes[lightboxIndex].icone] || Building2;
                     return <IconComp className="w-6 h-6" />;
                   })()}
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-[#2D2D2D]">{instalacoes[lightboxIndex].nome}</h3>
+                  <h3 className="text-xl font-bold text-[#2D2D2D]">{instalacoes[lightboxIndex].titulo}</h3>
                   <p className="text-[#5A5A6A] mt-1 font-medium">{instalacoes[lightboxIndex].descricao}</p>
                 </div>
               </div>

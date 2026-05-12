@@ -21,7 +21,15 @@ export default function ConfiguracoesAdmin() {
   useEffect(() => {
     async function load() {
       const data = await buscarConfiguracoes();
-      setConfig(data);
+      if (data) {
+        // Garante que campos de lista nunca sejam null
+        setConfig({
+          ...data,
+          faixas_etarias: data.faixas_etarias || [],
+          turnos: data.turnos || [],
+          objetivos: data.objetivos || []
+        });
+      }
       setLoading(false);
     }
     load();
@@ -191,13 +199,13 @@ export default function ConfiguracoesAdmin() {
             <div className="space-y-4">
               <label className="text-sm font-semibold text-white/60 block">Faixas Etárias Disponíveis</label>
               <div className="flex flex-wrap gap-2 mb-4">
-                {config?.faixas_etarias.map((faixa, idx) => (
+                {(config?.faixas_etarias || []).map((faixa, idx) => (
                   <span key={idx} className="px-4 py-2 bg-[#008FC7]/20 border border-[#008FC7]/40 rounded-full text-sm font-medium text-white flex items-center gap-2">
                     {faixa}
                     <button 
                       type="button" 
                       onClick={() => {
-                        const novaLista = config.faixas_etarias.filter((_, i) => i !== idx);
+                        const novaLista = (config.faixas_etarias || []).filter((_, i) => i !== idx);
                         setConfig({ ...config, faixas_etarias: novaLista });
                       }}
                       className="hover:text-red-400 transition-colors"
@@ -243,13 +251,13 @@ export default function ConfiguracoesAdmin() {
             <div className="space-y-4">
               <label className="text-sm font-semibold text-white/60 block">Turnos em Funcionamento</label>
               <div className="flex flex-wrap gap-2 mb-4">
-                {config?.turnos.map((turno, idx) => (
+                {(config?.turnos || []).map((turno, idx) => (
                   <span key={idx} className="px-4 py-2 bg-[#FBB03B]/20 border border-[#FBB03B]/40 rounded-full text-sm font-medium text-white flex items-center gap-2">
                     {turno}
                     <button 
                       type="button"
                       onClick={() => {
-                        const novaLista = config.turnos.filter((_, i) => i !== idx);
+                        const novaLista = (config.turnos || []).filter((_, i) => i !== idx);
                         setConfig({ ...config, turnos: novaLista });
                       }}
                       className="hover:text-red-400 transition-colors"
@@ -295,13 +303,13 @@ export default function ConfiguracoesAdmin() {
             <div className="space-y-4">
               <label className="text-sm font-semibold text-white/60 block">Objetivos de Contato</label>
               <div className="flex flex-wrap gap-2 mb-4">
-                {config?.objetivos.map((obj, idx) => (
+                {(config?.objetivos || []).map((obj, idx) => (
                   <span key={idx} className="px-4 py-2 bg-emerald-500/20 border border-emerald-500/40 rounded-full text-sm font-medium text-white flex items-center gap-2">
                     {obj}
                     <button 
                       type="button"
                       onClick={() => {
-                        const novaLista = config.objetivos.filter((_, i) => i !== idx);
+                        const novaLista = (config.objetivos || []).filter((_, i) => i !== idx);
                         setConfig({ ...config, objetivos: novaLista });
                       }}
                       className="hover:text-red-400 transition-colors"

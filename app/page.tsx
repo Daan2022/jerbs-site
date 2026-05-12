@@ -25,11 +25,13 @@ import GaleriaSection from '@/components/sections/GaleriaSection';
 import EstruturaSection from '@/components/sections/EstruturaSection';
 import ContatoSection from '@/components/sections/ContatoSection';
 import WhatsAppButton from '@/components/WhatsAppButton';
+import VisitTracker from '@/components/VisitTracker';
 
 // ─── Componente da Página ──────────────────────────────────────────────────
 export default function HomePage() {
   return (
     <main className="relative">
+      <VisitTracker />
       {/* ── Navegação Principal (fixa no topo) ── */}
       <Navbar />
 

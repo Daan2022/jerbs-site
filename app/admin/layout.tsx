@@ -16,11 +16,12 @@ import {
   Home, 
   Layout, 
   Menu, 
-  X 
+  X,
+  School
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function AdminLayout({
@@ -30,8 +31,26 @@ export default function AdminLayout({
 }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+  const handleLogout = async () => {
+    try {
+      const { authService } = await import('@/services/authService');
+      await authService.sair();
+      // Limpa o cookie de acesso
+      document.cookie = 'sb-access-token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      router.push('/login');
+    } catch (error) {
+      console.error('Erro ao sair:', error);
+    }
+  };
+
+  // Se for a página de reset de senha, não mostra a sidebar nem o layout do admin
+  if (pathname === '/admin/reset-password') {
+    return <main>{children}</main>;
+  }
 
   return (
     <div className="flex min-h-screen bg-[#0F0F1A] text-white">
@@ -103,6 +122,13 @@ export default function AdminLayout({
               onClick={() => setIsSidebarOpen(false)}
             />
             <NavItem 
+              href="/admin/estrutura" 
+              icon={<School size={22} />} 
+              label="Estrutura" 
+              active={pathname === '/admin/estrutura'}
+              onClick={() => setIsSidebarOpen(false)}
+            />
+            <NavItem 
               href="/admin/configuracoes" 
               icon={<Settings size={22} />} 
               label="Configurações" 
@@ -120,7 +146,10 @@ export default function AdminLayout({
             <Home size={20} />
             Ver Site
           </Link>
-          <button className="flex items-center gap-3 px-5 py-3 rounded-2xl text-sm font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all w-full">
+          <button 
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-5 py-3 rounded-2xl text-sm font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all w-full"
+          >
             <LogOut size={20} />
             Sair
           </button>

@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  landing-page:
+    build: .
+    image: escola-jerbs-landing:latest
+    container_name: escola-jerbs-app
+    restart: always
+    environment:
+      # Adicione aqui suas variáveis de ambiente do Supabase
+      - NEXT_PUBLIC_SUPABASE_URL=https://evjqgxfwjqjvzntgbfby.supabase.co
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_3nDrH2WDFfAiq6fqXcnGJQ_h1-9uKx4
+    networks:
+      - network_public
+    deploy:
+      mode: replicated
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=network_public"
+        # Substitua pelo domínio real da landing page
+        - "traefik.http.routers.escola-jerbs.rule=Host(`escolajerbs.com.br`, `www.escolajerbs.com.br`)"
+        - "traefik.http.routers.escola-jerbs.entrypoints=websecure"
+        - "traefik.http.routers.escola-jerbs.tls.certresolver=letsencryptresolver"
+        - "traefik.http.services.escola-jerbs.loadbalancer.server.port=3000"
+
+networks:
+  network_public:
+    external: true

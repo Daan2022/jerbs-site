@@ -11,9 +11,11 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   MapPin, Phone, Mail, Clock, Send, Star, CheckCircle2, 
-  ChevronRight, ArrowLeft, MessageCircle, User, Baby, Calendar, Target
+  ChevronRight, ArrowLeft, MessageCircle, User, Baby, Calendar, Target,
+  Instagram, Facebook
 } from 'lucide-react';
 import { buscarConfiguracoes, ConfiguracoesEscola } from '@/services/configuracoesService';
+import { salvarLead } from '@/services/supabaseService';
 import Image from 'next/image';
 
 // ─── Interface para dados do formulário ───────────────────────────────────
@@ -55,9 +57,9 @@ export default function ContatoSection() {
         if (data) {
           setFormData(prev => ({
             ...prev,
-            faixaEtaria: data.faixas_etarias[0] || '',
-            turnoDesejado: data.turnos[1] || '', // Tarde por padrão como sugerido
-            objetivo: data.objetivos[0] || ''
+            faixaEtaria: data.faixas_etarias?.[0] || '',
+            turnoDesejado: data.turnos?.[1] || data.turnos?.[0] || '',
+            objetivo: data.objetivos?.[0] || ''
           }));
         }
       } catch (error) {
@@ -79,9 +81,21 @@ export default function ContatoSection() {
   const proximaEtapa = () => setEtapa(prev => prev + 1);
   const etapaAnterior = () => setEtapa(prev => prev - 1);
 
-  const enviarFormulario = (e: React.FormEvent) => {
+  const enviarFormulario = async (e: React.FormEvent) => {
     e.preventDefault();
-    setEtapa(3); // Vai para o resumo/sucesso
+    setLoading(true);
+    try {
+      const ok = await salvarLead(formData);
+      if (ok) {
+        setEtapa(3); // Vai para o resumo/sucesso
+      } else {
+        alert('Ocorreu um erro ao enviar seus dados. Por favor, tente novamente ou use o WhatsApp direto.');
+      }
+    } catch (error) {
+      console.error('Erro no envio:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const reiniciarForm = () => {
@@ -90,10 +104,10 @@ export default function ContatoSection() {
       nomeResponsavel: '',
       whatsapp: '',
       nomeCrianca: '',
-      faixaEtaria: config?.faixas_etarias[0] || '',
+      faixaEtaria: config?.faixas_etarias?.[0] || '',
       idadeExata: '',
-      turnoDesejado: config?.turnos[1] || '',
-      objetivo: config?.objetivos[0] || '',
+      turnoDesejado: config?.turnos?.[1] || config?.turnos?.[0] || '',
+      objetivo: config?.objetivos?.[0] || '',
       observacoes: '',
     });
   };
@@ -118,7 +132,7 @@ export default function ContatoSection() {
 
   const CONTATO_INFOS = [
     { icon: <MapPin className="w-5 h-5" />, titulo: 'Endereço', valor: config?.endereco || '', cor: '#008FC7' },
-    { icon: <Phone className="w-5 h-5" />, titulo: 'Contato Central', valor: `${config?.telefone} / ${config?.whatsapp}`, cor: '#1C75BC' },
+    { icon: <Phone className="w-5 h-5" />, titulo: 'WhatsApp', valor: config?.whatsapp || '', cor: '#1C75BC' },
     { icon: <Mail className="w-5 h-5" />, titulo: 'E-mail', valor: config?.email || '', cor: '#FBB03B' },
     { icon: <Clock className="w-5 h-5" />, titulo: 'Horário', valor: config?.horario_funcionamento || '', cor: '#FFD166' },
   ];
@@ -134,7 +148,9 @@ export default function ContatoSection() {
           <div className="text-center mb-16">
             <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#008FC7]/20 border border-[#008FC7]/40 mb-6">
               <Star className="w-4 h-4 text-[#008FC7] fill-[#008FC7]" />
-              <span className="text-sm font-semibold text-[#008FC7]" style={{ fontFamily: 'var(--font-quicksand)' }}>Vagas abertas para 2025!</span>
+              <span className="text-sm font-semibold text-[#008FC7]" style={{ fontFamily: 'var(--font-quicksand)' }}>
+                Vagas abertas para {new Date().getMonth() > 7 ? new Date().getFullYear() + 1 : new Date().getFullYear()}!
+              </span>
             </motion.div>
             <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-4xl md:text-5xl font-black text-white mb-4" style={{ fontFamily: 'var(--font-poppins)' }}>
               Agende sua <span className="text-gradient-coral">Visita</span>
@@ -182,7 +198,7 @@ export default function ContatoSection() {
                       <div>
                         <label className="flex items-center gap-2 text-sm font-bold text-white/80 mb-2"><Calendar className="w-4 h-4 text-[#008FC7]" /> Faixa etária (obrigatório)</label>
                         <select name="faixaEtaria" value={formData.faixaEtaria} onChange={handleChange} className="w-full px-5 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white focus:border-[#008FC7] outline-none transition-all appearance-none cursor-pointer">
-                          {config?.faixas_etarias.map(f => <option key={f} value={f} className="bg-[#2D2D2D]">{f}</option>)}
+                          {(config?.faixas_etarias || []).map(f => <option key={f} value={f} className="bg-[#2D2D2D]">{f}</option>)}
                         </select>
                       </div>
                     </div>
@@ -201,13 +217,13 @@ export default function ContatoSection() {
                     <div>
                       <label className="flex items-center gap-2 text-sm font-bold text-white/80 mb-2"><Clock className="w-4 h-4 text-[#008FC7]" /> Turno desejado</label>
                       <select name="turnoDesejado" value={formData.turnoDesejado} onChange={handleChange} className="w-full px-5 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white focus:border-[#008FC7] outline-none transition-all cursor-pointer">
-                        {config?.turnos.map(t => <option key={t} value={t} className="bg-[#2D2D2D]">{t}</option>)}
+                        {(config?.turnos || []).map(t => <option key={t} value={t} className="bg-[#2D2D2D]">{t}</option>)}
                       </select>
                     </div>
                     <div>
                       <label className="flex items-center gap-2 text-sm font-bold text-white/80 mb-2"><Target className="w-4 h-4 text-[#008FC7]" /> Objetivo</label>
                       <select name="objetivo" value={formData.objetivo} onChange={handleChange} className="w-full px-5 py-3.5 rounded-2xl bg-white/5 border border-white/10 text-white focus:border-[#008FC7] outline-none transition-all cursor-pointer">
-                        {config?.objetivos.map(o => <option key={o} value={o} className="bg-[#2D2D2D]">{o}</option>)}
+                        {(config?.objetivos || []).map(o => <option key={o} value={o} className="bg-[#2D2D2D]">{o}</option>)}
                       </select>
                     </div>
                     <div>
@@ -284,6 +300,22 @@ export default function ContatoSection() {
                   Chamar no WhatsApp <ChevronRight className="w-5 h-5" />
                 </a>
               </div>
+
+              {/* Redes Sociais Lateral */}
+              {(config?.instagram_url || config?.facebook_url) && (
+                <div className="flex gap-4 mt-2">
+                  {config?.instagram_url && (
+                    <a href={config.instagram_url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-[#008FC7]/50 hover:bg-[#008FC7]/10 transition-all group">
+                      <Instagram className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    </a>
+                  )}
+                  {config?.facebook_url && (
+                    <a href={config.facebook_url} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-[#008FC7]/50 hover:bg-[#008FC7]/10 transition-all group">
+                      <Facebook className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -301,9 +333,23 @@ export default function ContatoSection() {
               <span className="text-[10px] text-white/40 uppercase tracking-widest mt-1">Desde 1994</span>
             </div>
           </div>
-          <div className="flex flex-col md:items-end gap-2 text-center md:text-right">
-            <p className="text-sm text-white/60 font-medium">© {new Date().getFullYear()} Escola JERBS · Carapicuíba, SP</p>
-            <p className="text-xs text-white/30">Educação que Transforma · Todos os direitos reservados</p>
+          <div className="flex flex-col md:items-end gap-4 text-center md:text-right">
+            <div className="flex gap-4 md:justify-end">
+              {config?.instagram_url && (
+                <a href={config.instagram_url} target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors" title="Instagram">
+                  <Instagram size={20} />
+                </a>
+              )}
+              {config?.facebook_url && (
+                <a href={config.facebook_url} target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors" title="Facebook">
+                  <Facebook size={20} />
+                </a>
+              )}
+            </div>
+            <div className="space-y-1">
+              <p className="text-sm text-white/60 font-medium">© {new Date().getFullYear()} Escola JERBS · Carapicuíba, SP</p>
+              <p className="text-xs text-white/30">Educação que Transforma · Todos os direitos reservados</p>
+            </div>
           </div>
         </div>
       </footer>

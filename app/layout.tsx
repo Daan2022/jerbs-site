@@ -27,6 +27,7 @@ const quicksand = Quicksand({
 
 // ─── Metadados SEO ─────────────────────────────────────────────────────────
 export const metadata: Metadata = {
+  metadataBase: new URL('https://escolajerbs.com.br'),
   title: 'Escola JERBS | Berçário e Educação Infantil em Carapicuíba',
   description:
     'A melhor escola infantil de Carapicuíba com 32 anos de tradição. Berçário especializado, Maternal e Pré-escola. Educação lúdica, afetuosa e segura. Agende sua visita!',
@@ -125,7 +126,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="bg-[#FDFAF6] antialiased overflow-x-hidden">
+      <body className="bg-[#FDFAF6] antialiased overflow-x-hidden" suppressHydrationWarning>
         {children}
       </body>
     </html>

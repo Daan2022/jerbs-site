@@ -12,7 +12,7 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, MapPin, Award, Heart, ChevronLeft, ChevronRight } from 'lucide-react';
 import Floating3DIcon from '@/components/Floating3DIcon';
-import { buscarSlidesHero, type SlideHero } from '@/services/supabaseService';
+import { buscarSlidesHero, type SlideHero } from '@/services/heroService';
 
 // ─── Variantes de animação para os elementos do slide ─────────────────────
 const slideVariants = {
@@ -73,15 +73,16 @@ export default function HeroSection() {
   const [slides, setSlides] = useState<SlideHero[]>([
     {
       id: 0,
-      titulo_principal: 'Educação que transforma, cuidado que acolhe.',
+      titulo: 'Educação que transforma, cuidado que acolhe.',
       subtitulo: 'A melhor opção para a educação do seu filho.',
-      texto_botao_primario: 'Agende uma Visita',
-      link_botao_primario: '#contato',
+      texto_botao_principal: 'Agende uma Visita',
+      link_botao_principal: '#contato',
       texto_botao_secundario: 'Conheça a Escola',
       link_botao_secundario: '#sobre',
       imagem_url_fundo: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=1920',
       imagem_url_destaque: 'https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=800',
       badge_texto: 'Escola JERBS',
+      ordem: 0
     }
   ]);
   const [[page, direction], setPage] = useState([0, 0]);
@@ -230,7 +231,7 @@ export default function HeroSection() {
                 <h1 
                   className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black leading-[1.2] lg:leading-[1.15] mb-6 text-[#2D2D2D] tracking-tight"
                   style={{ fontFamily: 'var(--font-poppins)' }}
-                  dangerouslySetInnerHTML={{ __html: slideAtual.titulo_principal }}
+                  dangerouslySetInnerHTML={{ __html: slideAtual.titulo }}
                 />
 
                 {/* Descrição - Responsiva */}
@@ -244,10 +245,10 @@ export default function HeroSection() {
                 {/* Ações */}
                 <div className="flex flex-col sm:flex-row gap-4 mb-10 justify-center lg:justify-start">
                   <a
-                    href={slideAtual.link_botao_primario}
+                    href={slideAtual.link_botao_principal}
                     className="group flex items-center justify-center gap-3 px-8 py-4 rounded-2xl font-bold text-lg text-white bg-gradient-to-r from-[#008FC7] to-[#1C75BC] hover:shadow-xl hover:shadow-[#008FC7]/30 hover:-translate-y-1 transition-all duration-300"
                   >
-                    {slideAtual.texto_botao_primario}
+                    {slideAtual.texto_botao_principal}
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </a>
 

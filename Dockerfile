@@ -9,6 +9,14 @@ RUN npm install
 # Copia o restante do código
 COPY . .
 
+# Recebe as variáveis como argumentos de build
+ARG NEXT_PUBLIC_SUPABASE_URL
+ARG NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+# Torna as variáveis disponíveis durante o build
+ENV NEXT_PUBLIC_SUPABASE_URL=$NEXT_PUBLIC_SUPABASE_URL
+ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=$NEXT_PUBLIC_SUPABASE_ANON_KEY
+
 # Gera o build de produção do Next.js
 RUN npm run build
 

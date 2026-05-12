@@ -28,5 +28,8 @@ jobs:
           push: true
           # AQUI ESTÁ A MÁGICA: Apontando para o seu repositório exato
           tags: systemdaan/escola-jerbs:latest
+          build-args: |
+            NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+            NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
           cache-from: type=gha
           cache-to: type=inline

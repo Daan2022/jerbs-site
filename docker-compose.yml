@@ -3,7 +3,8 @@ version: "3.7"
 services:
   landing-page:
     build: .
-    image: escola-jerbs-landing:latest
+    # Substitua 'seu-usuario' pelo seu login do Docker Hub no Portainer (env var)
+    image: systemdaan/escola-jerbs:latest
     container_name: escola-jerbs-app
     restart: always
     environment:

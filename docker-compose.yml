@@ -29,10 +29,19 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.docker.network=network_public"
-        - "traefik.http.routers.escola-jerbs.rule=Host(`escolajerbs.com.br`, `www.escolajerbs.com.br`)"
+        # Regra de Host corrigida para múltiplos domínios (padrão v2/v3)
+        - "traefik.http.routers.escola-jerbs.rule=Host(`escolajerbs.com.br`) || Host(`www.escolajerbs.com.br`)"
         - "traefik.http.routers.escola-jerbs.entrypoints=websecure"
         - "traefik.http.routers.escola-jerbs.tls.certresolver=letsencryptresolver"
         - "traefik.http.services.escola-jerbs.loadbalancer.server.port=3000"
+        
+        # Router adicional para capturar tráfego HTTP e evitar 404
+        - "traefik.http.routers.escola-jerbs-http.rule=Host(`escolajerbs.com.br`) || Host(`www.escolajerbs.com.br`)"
+        - "traefik.http.routers.escola-jerbs-http.entrypoints=web"
+        - "traefik.http.routers.escola-jerbs-http.middlewares=redirect-to-https"
+        
+        # Middleware de redirecionamento global
+        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
 
 networks:
   network_public:

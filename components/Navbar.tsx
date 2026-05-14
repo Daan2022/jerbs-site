@@ -57,25 +57,19 @@ export default function Navbar() {
             : 'bg-transparent'
         }`}
       >
-        <nav className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <nav className="max-w-7xl mx-auto px-6 py-0 flex items-center justify-between">
           {/* ── Logo ── */}
           <a href="#hero" className="flex items-center gap-2 group">
-            <div className="relative w-10 h-10 group-hover:scale-110 transition-transform duration-300">
+            <div className="relative w-72 h-24 group-hover:scale-105 transition-transform duration-300 -my-4">
               <Image 
                 src="/images/icon-logo-jerbs.png" 
                 alt="Logo Escola JERBS" 
                 fill 
-                sizes="40px"
-                className="object-contain"
+                sizes="288px"
+                className="object-contain object-left"
+                priority
               />
             </div>
-            <span
-              className="text-xl font-black tracking-tight"
-              style={{ fontFamily: 'var(--font-poppins)' }}
-            >
-              <span className="text-[#2D2D2D] text-sm font-semibold mr-1">Escola</span>
-              <span className="text-[#1C75BC]">JERBS</span>
-            </span>
           </a>
 
           {/* ── Links Desktop ── */}

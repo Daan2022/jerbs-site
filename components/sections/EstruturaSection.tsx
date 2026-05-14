@@ -125,7 +125,7 @@ export default function EstruturaSection() {
               style={{ fontFamily: 'var(--font-poppins)' }}
             >
               Nossa{' '}
-              <span style={{ background: 'linear-gradient(135deg, #C77DFF, #9B59B6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              <span style={{ background: 'linear-gradient(135deg, #008FC7, #1C75BC)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 Casa
               </span>
             </motion.h2>

@@ -319,7 +319,7 @@ export default function HeroSection() {
       <div className="absolute bottom-4 sm:bottom-12 left-0 right-0 z-40 flex flex-col items-center gap-6 pointer-events-none">
         
         {/* Navegação e Indicadores */}
-        <div className="flex items-center gap-6 sm:gap-10 pointer-events-auto">
+        <div className="flex items-center gap-32 sm:gap-48 pointer-events-auto">
           <button 
             onClick={() => paginate(-1)}
             className="p-2 sm:p-3 rounded-full bg-white/90 backdrop-blur-md border border-white/50 text-[#1C75BC] hover:bg-[#008FC7] hover:text-white transition-all shadow-xl active:scale-95"

@@ -227,16 +227,16 @@ export default function GaleriaSection() {
   }, [lightboxIndex, fecharLightbox, irAnterior, irProximo]);
 
   return (
-    <section id="galeria" className="relative py-24 overflow-hidden bg-gradient-to-b from-white via-[#F8FFF8] to-white">
+    <section id="galeria" className="relative py-24 overflow-hidden bg-gradient-to-b from-white via-[#F0F8FF] to-white">
       {/* ── Elementos decorativos de fundo ── */}
-      <div className="absolute top-20 right-0 w-[400px] h-[400px] blob-shape opacity-[0.06] bg-gradient-to-br from-[#52B788] to-[#95D5B2] pointer-events-none" />
-      <div className="absolute bottom-10 left-0 w-[300px] h-[300px] blob-shape-alt opacity-[0.06] bg-gradient-to-br from-[#008FC7] to-[#C77DFF] pointer-events-none" />
+      <div className="absolute top-20 right-0 w-[400px] h-[400px] blob-shape opacity-[0.06] bg-gradient-to-br from-[#008FC7] to-[#1C75BC] pointer-events-none" />
+      <div className="absolute bottom-10 left-0 w-[300px] h-[300px] blob-shape-alt opacity-[0.06] bg-gradient-to-br from-[#1C75BC] to-[#008FC7] pointer-events-none" />
 
       {/* ── Padrão de pontos sutil no fundo ── */}
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
-          backgroundImage: 'radial-gradient(circle, #52B788 1px, transparent 1px)',
+          backgroundImage: 'radial-gradient(circle, #008FC7 1px, transparent 1px)',
           backgroundSize: '32px 32px',
         }}
       />
@@ -248,11 +248,11 @@ export default function GaleriaSection() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#D8F3DC] border border-[#95D5B2]/30 mb-5"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#E0F4FF] border border-[#008FC7]/30 mb-5"
           >
-            <Camera className="w-4 h-4 text-[#52B788]" />
+            <Camera className="w-4 h-4 text-[#008FC7]" />
             <span
-              className="text-xs font-bold uppercase tracking-widest text-[#52B788]"
+              className="text-xs font-bold uppercase tracking-widest text-[#008FC7]"
               style={{ fontFamily: 'var(--font-quicksand)' }}
             >
               Nossa Galeria
@@ -270,7 +270,7 @@ export default function GaleriaSection() {
             Momentos{' '}
             <span
               style={{
-                background: 'linear-gradient(135deg, #52B788, #2D6A4F)',
+                background: 'linear-gradient(135deg, #008FC7, #1C75BC)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
@@ -329,10 +329,10 @@ export default function GaleriaSection() {
             whileHover={{ scale: 1.04, y: -2 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => abrirLightbox(0, true)}
-            className="group relative flex items-center gap-3 px-10 py-5 rounded-2xl text-white font-bold text-lg shadow-xl hover:shadow-2xl hover:shadow-[#52B788]/25 transition-all duration-300 overflow-hidden"
+            className="group relative flex items-center gap-3 px-10 py-5 rounded-2xl text-white font-bold text-lg shadow-xl hover:shadow-2xl hover:shadow-[#008FC7]/25 transition-all duration-300 overflow-hidden"
             style={{
               fontFamily: 'var(--font-quicksand)',
-              background: 'linear-gradient(135deg, #2D6A4F, #52B788)',
+              background: 'linear-gradient(135deg, #008FC7, #1C75BC)',
             }}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />

@@ -12,7 +12,6 @@ import {
   GraduationCap,
   Utensils,
   Music2,
-  TreePine,
   Camera,
   Bus,
   HeartHandshake,
@@ -56,13 +55,6 @@ const DIFERENCIAIS: Diferencial[] = [
     descricao: 'Aulas de musicalização e artes plásticas integradas ao currículo pedagógico.',
     color: '#FBB03B',
     bgColor: '#FFF3CC',
-  },
-  {
-    icon: <TreePine className="w-6 h-6" />,
-    titulo: 'Área Verde',
-    descricao: 'Espaços ao ar livre que estimulam o contato com a natureza e a atividade física.',
-    color: '#C1272D',
-    bgColor: '#FFE8E4',
   },
   {
     icon: <Camera className="w-6 h-6" />,
